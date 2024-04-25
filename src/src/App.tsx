@@ -1,7 +1,18 @@
+import Navbar from "./components/Navbar";
+// import Main from "./components/Main";
+import Main from "./components/Main";
+import Game from "./components/Game";
+import AboutUs from "./components/AboutUs";
+
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold">Tubes 2 Stima</h1>
+      <div className="min-h-screen font-poppins">
+        <Navbar />
+        <Main />
+        <Game />
+        <AboutUs />
+      </div>
     </>
   );
 }
