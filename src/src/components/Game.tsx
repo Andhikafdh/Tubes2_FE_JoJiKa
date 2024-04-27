@@ -107,12 +107,12 @@ const Game = () => {
             </div>
           </form>
         </div>
-        <div className="w-1/4 h-5/6 flex items-center justify-center mt-10 overflow-y-auto max-h-screen">
+        <div className="w-1/4 h-5/6 flex items-center justify-center mt-10 ">
           {isLoading ? (
             <Loading />
           ) : (
             <>
-              <div className="mt-20 ml-4 w-64">
+              <div className="mt-20 ml-4 w-64 overflow-y-auto max-h-screen">
                 {data && (
                   <>
                     <h3 className="text-black text-3xl">Result: </h3>
