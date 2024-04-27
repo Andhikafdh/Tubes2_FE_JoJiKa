@@ -58,7 +58,7 @@ const SearchBar = ({ onValueChange }: SearchBarProps) => {
           {suggestions.map((suggestion) => (
             <div
               key={suggestion.title}
-              className="flex space-x-2 w-full border-2 bg-white border-b-black border-x-black hover:bg-black group"
+              className="flex space-x-2 w-full border-2 bg-white border-b-black border-x-black hover:bg-black group cursor-pointer"
               onClick={() => handleClickSuggestions(suggestion)}
             >
               <img

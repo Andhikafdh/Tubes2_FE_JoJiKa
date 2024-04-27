@@ -16,7 +16,9 @@ const Main = () => {
           <ul className="flex space-x-10 text-xl mt-10">
             <li>
               <p className=" hover:underline cursor-pointer">
-                <a href="#About">About us</a>
+                <Link to="about" smooth={true} spy={true} duration={500}>
+                  About us
+                </Link>
               </p>
             </li>
             <li>

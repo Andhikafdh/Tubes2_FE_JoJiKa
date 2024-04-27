@@ -4,19 +4,25 @@ import { Switch } from "./ui/switch";
 import { Button } from "./ui/button";
 import Loading from "./Loading";
 
-type Methods = "DFS" | "IDS";
+type Methods = "bfs" | "ids";
+
+type Data = {
+  path: ShowPage[];
+  time: number;
+} | null;
+
+type ShowPage = {
+  title: string;
+  thumbnail: string;
+  link: string;
+};
 
 const Game = () => {
+  const [data, setData] = useState<Data>(null);
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
-  const [method, setMethod] = useState<Methods>("DFS");
+  const [method, setMethod] = useState<Methods>("bfs");
   const [isLoading, setIsLoading] = useState(false);
-
-  // const handleInput = () => {
-  //   console.log(startLocation);
-  //   console.log(endLocation);
-  //   console.log(method);
-  // };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,22 +31,45 @@ const Game = () => {
     const formattedEndLocation = endLocation.replace(/ /g, "_");
 
     setIsLoading(true);
+    // console.log(method, formattedStartLocation, formattedEndLocation);
 
-    setTimeout(() => {}, 10000);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api?method=${method}&start=${formattedStartLocation}&end=${formattedEndLocation}`
+      );
 
-    const response =
-      method === "DFS"
-        ? await fetch(
-            `http://localhost:8080/api/bfs?start=${formattedStartLocation}&end=${formattedEndLocation}`
-          )
-        : await fetch(
-            `http://localhost:8080/api/ids?start=${formattedStartLocation}&end=${formattedEndLocation}`
-          );
+      const data = await response.json();
 
-    const data = await response.json();
-    console.log(data);
+      // add the first page to the path
 
-    setIsLoading(false);
+      const updatedPath = method === "ids" ? [formattedStartLocation] : [];
+      updatedPath.push(...data.path);
+
+      const promises = updatedPath.map(async (url: string) => {
+        const title = url.split("/wiki/").pop()?.replace(/_/g, "_");
+        // console.log(title);
+        const res = await fetch(
+          `https://en.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=pageimages|pageterms&titles=${title}&pithumbsize=50`
+        );
+        const json = await res.json();
+        const pageId = Object.keys(json.query.pages)[0];
+        const page = json.query.pages[pageId];
+        return {
+          title: page.title,
+          thumbnail: page.thumbnail
+            ? page.thumbnail.source
+            : "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
+          link: `https://en.wikipedia.org/wiki/${title}`,
+        };
+      });
+
+      const pages = await Promise.all(promises);
+      setData({ path: pages, time: data.time });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -64,10 +93,10 @@ const Game = () => {
               id="method"
             >
               <div className="flex items-center space-x-4">
-                <p className="font-semibold">DFS</p>
+                <p className="font-semibold">BFS</p>
                 <Switch
                   onCheckedChange={(checked) =>
-                    setMethod(checked ? "IDS" : "DFS")
+                    setMethod(checked ? "ids" : "bfs")
                   }
                 />
                 <p className="font-semibold">IDS</p>
@@ -78,8 +107,38 @@ const Game = () => {
             </div>
           </form>
         </div>
-        <div className="w-1/4 h-full flex items-center justify-center">
-          {isLoading ? <Loading /> : null}
+        <div className="w-1/4 h-5/6 flex items-center justify-center mt-10 overflow-y-auto max-h-screen">
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <div className="mt-20 ml-4 w-64">
+                {data && (
+                  <>
+                    <h3 className="text-black text-3xl">Result: </h3>
+                    {data.path.map((page, index) => (
+                      <a
+                        key={index}
+                        className="flex items-center space-x-4 bg-black mb-2 p-1 rounded group"
+                        href={page.link}
+                        target="_blank"
+                      >
+                        {page.thumbnail && (
+                          <img
+                            src={page.thumbnail}
+                            alt={page.title}
+                            className="w-10 h-10"
+                          />
+                        )}
+                        <p className="text-[rgb(255,91,25)]">{page.title}</p>
+                      </a>
+                    ))}
+                    <p>Exec time: {data.time}</p>
+                  </>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
