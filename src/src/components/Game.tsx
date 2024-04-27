@@ -9,6 +9,7 @@ type Methods = "bfs" | "ids";
 type Data = {
   path: ShowPage[];
   time: number;
+  totalVisited: number;
 } | null;
 
 type ShowPage = {
@@ -64,7 +65,11 @@ const Game = () => {
       });
 
       const pages = await Promise.all(promises);
-      setData({ path: pages, time: data.time });
+      setData({
+        path: pages,
+        time: data.time,
+        totalVisited: data.visited,
+      });
     } catch (error) {
       console.error(error);
     } finally {
@@ -133,7 +138,9 @@ const Game = () => {
                         <p className="text-[rgb(255,91,25)]">{page.title}</p>
                       </a>
                     ))}
-                    <p>Exec time: {data.time}</p>
+                    <p className="mt-4">Total path: {data.path.length - 1}</p>
+                    <p>Total visited site: {data.totalVisited}</p>
+                    <p>Execution time: {data.time}</p>
                   </>
                 )}
               </div>
