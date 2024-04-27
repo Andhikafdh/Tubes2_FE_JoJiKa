@@ -140,7 +140,7 @@ const Game = () => {
                     ))}
                     <p className="mt-4">Total path: {data.path.length - 1}</p>
                     <p>Total visited site: {data.totalVisited}</p>
-                    <p>Execution time: {data.time}</p>
+                    <p>Execution time: {data.time} ms</p>
                   </>
                 )}
               </div>
