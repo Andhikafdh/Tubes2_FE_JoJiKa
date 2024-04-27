@@ -6,21 +6,17 @@
 
 - [General Information](#general-information)
 - [Requirements](#requirements)
-- [How to Run and Build (Windows)](#how-to-run-and-compile-windows)
-- [Screenshot](#screenshot)
 - [Author](#author)
 
 ## **General Information**
 
-> WikiRun is a game involving Wikipedia, a free online encyclopedia managed by various volunteers worldwide, where players start at a Wikipedia article and must navigate through other articles on Wikipedia (by clicking links within each article) to reach another pre-determined article in the shortest time or with the fewest clicks (articles).
+WikiRun is a game involving Wikipedia, a free online encyclopedia managed by various volunteers worldwide, where players start at a Wikipedia article and must navigate through other articles on Wikipedia (by clicking links within each article) to reach another pre-determined article in the shortest time or with the fewest clicks (articles).
 
-noted : this is the github repository for the front end. Here is the github repository for the back end ([git@github.com:/Tubes2_BE_JoJiKa.git](https://github.com/JonathanSaragih/Tubes2_BE_JoJiKa))
+>noted : this is the github repository for the front end. Here is the github repository for the back end ([git@github.com:/Tubes2_BE_JoJiKa.git](https://github.com/JonathanSaragih/Tubes2_BE_JoJiKa))
 
 ## **Requirements**
 
 To use this program, you will need to install **nodeJS** (https://nodejs.org/en/download) on the device you are using. You will also need **Visual Studio** (https://visualstudio.microsoft.com/) to be installed before running the program.
-
-## **How to Run and Build (Windows)**
 
 ### **Setup**
 
@@ -53,8 +49,6 @@ $ npm install
 ```sh
 $ npm run dev
 ```
-
-## **Screenshot**
 
 ## Authors
 
